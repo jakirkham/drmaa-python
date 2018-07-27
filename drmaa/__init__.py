@@ -32,6 +32,8 @@ Documentation is hosted on ReadTheDocs: http://drmaa-python.readthedocs.org/
 
 from __future__ import absolute_import, print_function, unicode_literals
 
+import logging
+
 from .const import (ATTR_BUFFER, BLOCK_EMAIL, CONTACT_BUFFER,
                     control_action_to_string, DEADLINE_TIME, DRM_SYSTEM_BUFFER,
                     DRMAA_IMPLEMENTATION_BUFFER, DURATION_HLIMIT,
@@ -98,3 +100,8 @@ __all__ = ['JobInfo', 'JobTemplate', 'Session', 'AlreadyActiveSessionException',
            'SUBMISSION_STATE_ACTIVE', 'SUBMISSION_STATE_HOLD',
            'TIMEOUT_NO_WAIT', 'TIMEOUT_WAIT_FOREVER', 'TRANSFER_FILES',
            'V_ARGV', 'V_EMAIL', 'V_ENV', 'WCT_HLIMIT', 'WCT_SLIMIT', 'WD']
+
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+logger.addHandler(logging.NullHandler())
