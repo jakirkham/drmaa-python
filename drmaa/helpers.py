@@ -32,6 +32,8 @@ from collections import namedtuple
 from ctypes import (byref, c_uint, create_string_buffer, POINTER, pointer,
                     sizeof)
 
+from wurlitzer import pipes
+
 from drmaa.const import ATTR_BUFFER, ENCODING, NO_MORE_ELEMENTS
 from drmaa.errors import error_buffer
 from drmaa.wrappers import (drmaa_attr_names_t, drmaa_attr_values_t,
@@ -305,8 +307,19 @@ def c(f, *args):
     A helper function wrapping calls to the C DRMAA functions with error
     managing code.
     """
-    return f(*(args + (error_buffer, sizeof(error_buffer))))
 
+    with pipes() as (stdout, stderr):
+        result = f(*(args + (error_buffer, sizeof(error_buffer))))
+
+    for line in stdout.readline():
+        if line:
+            logger.debug(line)
+
+    for line in stderr.readline():
+        if line:
+            logger.debug(line)
+
+    return result
 
 def string_vector(v):
     vlen = len(v)
