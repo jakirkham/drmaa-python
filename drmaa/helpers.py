@@ -26,6 +26,7 @@ internal helpers
 
 from __future__ import absolute_import, print_function, unicode_literals
 
+import logging
 import sys
 from collections import namedtuple
 from ctypes import (byref, c_uint, create_string_buffer, POINTER, pointer,
@@ -53,6 +54,11 @@ if sys.version_info < (3, 0):
 
 
 _BUFLEN = ATTR_BUFFER
+
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+logger.addHandler(logging.NullHandler())
 
 
 class BoolConverter(object):
